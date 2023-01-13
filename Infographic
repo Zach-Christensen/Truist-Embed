@@ -1,0 +1,550 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <link href="https://fonts.googleapis.com/css2?family=Roboto&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Abel&display=swap" rel="stylesheet">
+  <title>Truist Ecosystem Chart</title>
+  <style>
+    .parent {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background-color: transparent;
+    }
+
+    * {
+      margin: 0;
+      padding: 0;
+      font-family: Roboto;
+      background-color: transparent;
+    }
+
+    /* #myChart{
+
+  z-index: 3;
+} */
+    .chartCard {
+      width: 800vw;
+      height: calc(100vh - 15px);
+      background-color: transparent;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-family: 'Abel', sans-serif;
+      /* z-index: 2; */
+    }
+
+    .chartBox {
+      /* padding: 20px; */
+      justify-content: center;
+      width: 800px;
+
+      height: 400px;
+      padding: 20px;
+      /* border-radius: 20px; */
+      /* border: solid 1px rgba(255, 26, 104, 1); */
+      background: transparent;
+      position: absolute;
+
+      display: flex;
+      flex-direction: column;
+
+      /* column-width: 600px; */
+      justify-content: center;
+      align-items: center;
+      /* z-index: 2; */
+      /* background-image: linear-gradient(to bottom right, #26f7ec, #01758a); */
+      /* position: relative; */
+    }
+
+    .donut-inner {
+      position: absolute;
+      align-items: center;
+      background: transparent;
+      /* color: #54b3d6; */
+      /* color: #4cbbc7; */
+        color: #1f646b;
+      font-size: 16px;
+      /* font-weight: bold; */
+      /* padding:15vw; */
+      /* width:200px; */
+      padding-top: 25px;
+      text-align: center;
+      font-family: 'Abel', sans-serif;
+      line-height: 1em;
+      /* font-weight: bold; */
+      /* display: inline-block; */
+      /* border-bottom: 1px dotted #54b3d6; */
+      /* z-index: auto; /////////////////////////////////*/
+      animation-name: example;
+      animation-duration: 5s;
+      z-index: -1;
+    }
+
+    @keyframes example {
+      from {
+        color: white;
+        /* border-bottom: 1px dotted white; */
+      }
+
+      to {
+        color: #1f646b;
+        /* border-bottom: 1px dotted #54b3d6; */
+      }
+    }
+    .bigTitle{
+        color: #1f646b;
+      animation-name: bigTitleAnimation;
+      animation-duration: 3s;
+      z-index: 2;
+    }
+
+    .bigTitleSpan{
+      animation-name: bigTitleSpanAnimation;
+      animation-duration: 3s;
+      z-index: -1;
+    }
+
+    @keyframes bigTitleAnimation {
+      from {
+        color: white;
+        /* border-bottom: 1px dotted white; */
+      }
+
+      to {
+        color: #1f646b;
+        /* border-bottom: 1px dotted #54b3d6; */
+      }
+    }
+    @keyframes bigTitleSpanAnimation {
+      from {
+        color: white;
+        /* border-bottom: 1px dotted white; */
+      }
+
+      to {
+        color: #4cbbc7;
+        /* border-bottom: 1px dotted #54b3d6; */
+      }
+    }
+
+
+
+  </style>
+</head>
+
+<body>
+  <div class="chartBox">
+    <div class="donut-inner" class="tooltip">
+      TALENT<br />BRAND<br />FOUNDATIONS<span class="tooltiptext">
+
+      </span>
+    </div>
+    <!-- width:"800" height: "400"  -->
+    <div class="chartMenu">
+      <p class="bigTitle" style="text-align: center; font-family: 'Abel', sans-serif; line-height:16px;"> Talent Brand & Marketing Ecosystem<br /><span class="bigTitleSpan" style="color: #4cbbc7;font-family: 'Abel', sans-serif;font-size: 14px;">
+          Holistic Strategy, Consulting & Creative Services
+          <span /></p>
+    </div>
+    <div class="chartCard">
+      <div class="chartBox">
+        <canvas id="myChart"></canvas>
+      </div>
+    </div>
+  </div>
+  <div id="canvas-holder" style="width:20%">
+    <canvas id="chart-area" />
+  </div>
+  <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <!-- <script src='https://cdnjs.cloudflare.com/ajax/libs/jquery/3.1.1/jquery.min.js'></script>
+  <script src='https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.5.0/Chart.min.js'></script><script  src="./script.js"></script> -->
+
+  <script src="https://unpkg.com/chart.js-plugin-labels-dv/dist/chartjs-plugin-labels.min.js"></script>
+  <!-- <script src="chart.js"></script> -->
+  <script>
+    const ctx = document.getElementById("myChart");
+
+
+    Chart.defaults.font.size = 11;
+
+    // labelsTwo set to make the labels-legends with lines
+    const doughnutLabelsLine = {
+      id: "doughnutLabelsLine",
+      // afterDraw(chart, args, options){
+      afterDatasetsDraw(chart, args, options) {
+
+        // console.log("after draw", { chart, args, options });
+        const {
+          ctx,
+          chartArea: {
+            top,
+            bottom,
+            left,
+            right,
+            width,
+            height
+          },
+        } = chart;
+
+        // console.log(chart.data.datasets);
+        chart.data.datasets.forEach((dataset, i) => {
+          chart.getDatasetMeta(i).data.forEach((datapoint, index) => {
+            //        if (i === 2) {
+            //        chart.getDatasetMeta(i).data.shift(); //'one' will delete from array
+            // }
+            // console.log({ datapoint, index });
+            // console.log(datapoint.tooltipPosition())
+            // console.log(dataset.hoverBackgroundColor[index]);
+            const {
+              x,
+              y
+            } = datapoint.tooltipPosition();
+
+
+
+            // console.log(chart.getDatasetMeta(i).data);////////////
+            // ctx.fillStyle = "black";
+
+
+            if (i === 2) {
+              // ctx.strokeStyle = dataset.backgroundColor[index];
+
+              ctx;
+
+
+              // chart.getDatasetMeta(i).data.shift();
+              // chart.data.datasets.datapoint.tooltipPosition().shift(); //'one' will delete from array
+            } else {
+              ctx.fillStyle = dataset.hoverBackgroundColor[index];
+
+              // ctx.fill();
+              // ctx.fillRect(x,y, 8, 8);
+
+              ctx.beginPath();
+              ctx.arc(x, y, 3, 0, 2 * Math.PI);
+              ctx.fill()
+            }
+            // ctx.fillRect(x,y, 8, 8);
+
+            // draw line
+            const halfwidth = width / 2;
+            const halfheight = width / 4;
+
+            const xLine = x >= halfwidth ? x + 60 : x - 60;
+            const yLine = y >= halfheight ? y + 70 : y - 70;
+            const extraLine = x >= halfwidth ? 20 : -20;
+
+            ctx.beginPath();
+            ctx.moveTo(x, y);
+            ctx.lineTo(xLine, yLine);
+            ctx.lineTo(xLine + extraLine, yLine);
+            // ctx.strokeStyle = "#adadad";
+            ctx.lineCap = "round";
+            // ctx.stroke.order="-10";
+            // ctx.order="1";
+            if (i === 2) {
+              // ctx.strokeStyle = dataset.backgroundColor[index];
+
+              ctx;
+
+
+              // chart.getDatasetMeta(i).data.shift();
+              // chart.data.datasets.datapoint.tooltipPosition().shift(); //'one' will delete from array
+            } else {
+              ctx.strokeStyle = dataset.hoverBackgroundColor[index];
+              ctx.stroke();
+              ctx.lineWidth = 0.5;
+              // ctx.lineWidth = 1;
+              // ctx.stroke.zIndex="-1";
+              // ctx.order = "-2"
+            }
+            // // text
+            if (i === 2) {
+              // ctx.strokeStyle = dataset.backgroundColor[index];
+              ctx;
+
+            } else {
+              // // ctx.weight = 800;
+
+              // control the Position
+              const textXPosition = x >= halfwidth ? "left" : " right";
+              const plusFivePx = x >= halfwidth ? 55 : -55;
+              ctx.textAlign = textXPosition;
+              ctx.textBaseline = "middle";
+              // ctx.fillStyle = 'darkGrey';
+              ctx.fillStyle = dataset.backgroundColor[index];
+              // ctx.fillText(chart.data.labelsTwo[index], xLine + extraLine + plusFivePx, yLine);
+              // make text multiline
+              const lines = dataset.captions[index];
+              const textX = xLine + extraLine + plusFivePx;
+              const textY = yLine;
+              // ctx.fillStyle = "black";
+              ctx.textAlign = "center";
+
+              lines.forEach((line, i) => {
+
+
+
+                const textWidth = ctx.measureText(line).width;
+                ctx.font = "16px Abel";
+
+                // ctx.font.fontWeight = "900";
+                ctx.fillText(line, textX, textY + i * 15);
+
+
+
+              });
+            }
+          });
+        });
+      }
+    };
+    // };
+
+
+
+    const dataPoints = {
+
+      donuts: [
+
+
+        {
+          label: "Donut Inner",
+          // backgroundColor: ["red", "blue"],
+          // borderColor: ["red", "blue"],
+          cutout: "5%",
+          borderRadius: 1,
+          order: 1,
+          points: [{
+              value: 20,
+              color: "rgb(74, 93, 102, 0.9)",
+              borderColor: "white",
+              backgroundColor: "#dfe5e6",
+              hoverBackgroundColor: "rgb(74, 93, 102, 0.9)",
+              label: ["1| Data / Insights",
+                "2| Measurement & Reporting",
+                "3| Tools / Technologies",
+                "4| Process Definition"
+              ],
+              caption: ["DEPARTMENTAL", "INFRASTRUCTURE"],
+            },
+            {
+              value: 20,
+              color: "rgb(74, 93, 102, 0.9)",
+              borderColor: "white",
+              backgroundColor: "#bccccf",
+              hoverBackgroundColor: "rgb(74, 93, 102, 0.9)",
+              label: [
+                "1| Resourcing Strategy",
+                "2| Talent Marketing Org Design",
+                "    & Job Descriptions",
+                "3| Team Operating Model Design",
+                "4| Practitioner Referrals",
+                "5| 1:1 & Group Coaching for",
+                "    Talent Brand practitioners",
+                "6| Budget Planning & Advisory"
+              ],
+              caption: ["DEPARTMENTAL", "CAPABILITY"],
+            },
+          ],
+        },
+
+
+        {
+          label: "Donut Outer", //////////////////////////////////
+          // borderColor: "white",
+
+          cutout: "4%",
+          borderRadius: 1,
+          hoverOffset: 30,
+          points: [{
+              value: 50,
+              color: "rgb(70, 153, 158,0.9)",
+              borderColor: "white",
+              // borderColor: "rgb(70, 153, 158,0.5)",
+              backgroundColor: "#26f7ec",
+              hoverBackgroundColor: "rgb(70, 153, 158,0.9)",
+              // hoverBackgroundColor: "#02bdb3",
+              label: [
+                "1| Social Response Mgmt ",
+
+                "2| Key Career Channels Mgmt ",
+
+                "3| Employer Awards Consulting ",
+
+                "4| Employee Advocacy & Ambassadorship",
+
+                "5| Programmatic Content Development",
+              ],
+              caption: ["BRAND", "MANAGEMENT", "STRATEGY"],
+
+            },
+            {
+              value: 50,
+              color: "rgb(70, 153, 158,0.9)",
+              borderColor: "white",
+              // borderColor: "#097075",
+              backgroundColor: "#008d9c",
+              hoverBackgroundColor: "rgb(9, 112, 117,0.9)",
+              // hoverBackgroundColor: "#097075",
+              label: ['1| Persona Development',
+                '2| Activation Planning Workshops',
+                '3| Campaign Concept Development',
+                '4| Creative Asset Production'
+              ],
+              caption: ["RECRUITMENT", "MARKETING", "STRATEGY"],
+              // borderColor: ["#00f2d7"],
+            },
+            {
+              value: 50,
+              color: "rgb(70, 153, 158,0.9)",
+              borderColor: "white",
+              // borderColor: "rgb(3, 163, 163,0.4)",
+              backgroundColor: "#09c9c9",
+
+              hoverBackgroundColor: "rgb(3, 163, 163, 0.9)",
+              // hoverBackgroundColor: "#03a3a3",
+
+              caption: ["EXPERIENCE", "MANAGEMENT", "STRATEGY"],
+              label: ['1| Onboarding Experience Design',
+                '2| Internal Communications',
+                '3| Employee Involvement Programs',
+                '4| Executive / Leadership ',
+                '    Coaching & Workshops', '5| Policy & Benefits Redesign',
+                '6| Custom Team Events'
+              ],
+
+            },
+          ],
+        },
+        {
+          label: "Donut centered",
+          cutout: "1%",
+          borderRadius: 1,
+          // hoverOffset: 3,
+          points: [{
+            padding:10,
+            value: 50,
+            color: "rgb(47, 168, 181,0.9)",
+            // color: "rgb(60, 187, 201,0.9)",
+            borderColor: "transparent",
+            // borderColor: "rgb(70, 153, 158,0.5)",
+            backgroundColor: "transparent",
+            hoverBackgroundColor: "rgb(60, 187, 201,0.6)",
+            // hoverBackgroundColor: "#02bdb3",
+            label: [
+              '1| Mission/Vision/Values Development',
+              '2| Talent Research / Insights',
+              '3| Holistic EVP (People Deal™)',
+              '4| Talent Brand Messaging Architecture',
+              '5| Talent Brand Creative Platform',
+              '6| Talent Brand Comms Style Guides',
+              '7| Candidate Journey Mapping',
+              '8| Candidate Experience Strategy'
+            ],
+            caption: ["TALENT", "BRAND", "FOUNDATION"],
+
+          }]
+        },
+
+      ]
+    };
+
+    // labels should show in two lines
+    const getConfig = (dataPoints) => {
+
+      const config = {
+
+        type: "doughnut",
+        data: {
+          datasets: dataPoints.donuts.map((donut) => {
+            return {
+              ...donut,
+
+
+
+              captions: donut.points.map((point) => point.caption),
+              borderColor: donut.points.map((point) => point.borderColor),
+              backgroundColor: donut.points.map((point) => point.backgroundColor),
+              hoverBackgroundColor: donut.points.map((point) => point.hoverBackgroundColor),
+              data: donut.points.map((point) => point.value),
+              labels: donut.points.map((point) => point.label),
+              color: donut.points.map((point) => point.color),
+              padding: donut.points.map((point) => point.padding),
+            };
+          }),
+        },
+
+        options: {
+          layout: {
+            padding: 50,
+          },
+          maintainAspectRatio: false,
+          // responsive: true,
+          plugins: {
+            legend: {
+              display: false,
+            },
+
+
+            tooltip: {
+              order: 1,
+              yAlign: 'top',
+              // xAlign: 'center',
+              displayColors: false,
+              padding:14,
+              bodyFont: {
+                family: 'Abel',
+                size: 13,
+
+              },
+              // console.log(tooltip),
+              callbacks: {
+                label(context) {
+                  // console.log({
+                  //   dataset: context.datasetIndex,
+                  //   label: context.label,
+                  //   expectedLabel: context.dataset.labels[context.dataIndex],
+                  // });
+                  return context.dataset.labels[context.dataIndex];
+                },
+              },
+              backgroundColor: (tooltipItem) => {
+                if (tooltipItem.tooltipItems[0]) {
+
+
+                  // return tooltipItem.tooltipItems[0].dataset.hoverBackgroundColor[0];
+                  // return tooltipItem.datasetIndex[2].tooltipItems[0].dataset.color.[0];
+                  return tooltipItem.tooltipItems[0].dataset.color;
+                  // const hello = tooltipItem.tooltipItems[0].dataset.hoverBackgroundColor[0];
+                  // if (hello === true){
+                  //   order= 10;
+                  // }
+                }
+
+              },
+
+            },
+
+          }, // plugins
+        },
+     // options
+        plugins: [doughnutLabelsLine],
+
+      };
+      return config;
+};
+
+
+
+    // render init block
+    const myChart = new Chart(document.getElementById("myChart"), getConfig(dataPoints));
+
+
+  </script>
+</body>
+
+</html>
